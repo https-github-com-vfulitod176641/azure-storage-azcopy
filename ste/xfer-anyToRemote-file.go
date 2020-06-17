@@ -24,14 +24,15 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-pipeline-go/pipeline"
-	"github.com/Azure/azure-storage-azcopy/common"
 	"hash"
 	"net/http"
 	"net/url"
 	"runtime"
 	"strings"
 	"sync"
+
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"github.com/Azure/azure-storage-azcopy/common"
 )
 
 // This sync.Once is present to ensure we output information about a S2S access tier preservation failure to stdout once
@@ -462,6 +463,7 @@ func commonSenderCompletion(jptm IJobPartTransferMgr, s sender, info TransferInf
 			jptm.Log(pipeline.LogDebug, "Finalizing Transfer")
 		}
 	} else {
+		jptm.SetStatus(common.ETransferStatus.Failed())
 		if jptm.ShouldLog(pipeline.LogDebug) {
 			jptm.Log(pipeline.LogDebug, "Finalizing Transfer Cancellation/Failure")
 		}
